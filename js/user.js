@@ -9,49 +9,51 @@ let currentUser;
 
 /** Handle login form submission. If login is successful, set up the user instance */
 async function login(evt) {
-  console.debug("login", evt);
-  evt.preventDefault();
+  console.debug("login", evt); // Log the event for debugging
+  evt.preventDefault(); // Prevent the default form submission behavior
 
-  // Get the username and password from the form
+  // Get the username and password from the login form
   const username = $("#login-username").val();
   const password = $("#login-password").val();
 
-  // Call the API to log the user in and get the User instance
+  // Call the User class's login method to authenticate and get a User instance
   currentUser = await User.login(username, password);
 
-  // Reset the login form fields
+  // Reset the login form fields after submission
   $loginForm.trigger("reset");
 
-  // Save the user's credentials in localStorage and update the UI
+  // Save the user's credentials in localStorage for session persistence
   saveUserCredentialsInLocalStorage();
+  // Update the UI to reflect the logged-in state
   updateUIOnUserLogin();
 }
 
-// Attach event listener for the login form submission
+// Attach event listener to handle login form submission
 $loginForm.on("submit", login);
 
 /** Handle signup form submission. */
 async function signup(evt) {
-  console.debug("signup", evt);
-  evt.preventDefault();
+  console.debug("signup", evt); // Log the event for debugging
+  evt.preventDefault(); // Prevent the default form submission behavior
 
-  // Get the name, username, and password from the form
+  // Get the name, username, and password from the signup form
   const name = $("#signup-name").val();
   const username = $("#signup-username").val();
   const password = $("#signup-password").val();
 
-  // Call the API to sign up the user and get the User instance
+  // Call the User class's signup method to create a new account and get a User instance
   currentUser = await User.signup(username, password, name);
 
-  // Save the user's credentials in localStorage and update the UI
+  // Save the user's credentials in localStorage for session persistence
   saveUserCredentialsInLocalStorage();
+  // Update the UI to reflect the logged-in state
   updateUIOnUserLogin();
 
-  // Reset the signup form fields
+  // Reset the signup form fields after submission
   $signupForm.trigger("reset");
 }
 
-// Attach event listener for the signup form submission
+// Attach event listener to handle signup form submission
 $signupForm.on("submit", signup);
 
 /** Handle the click of the logout button
@@ -59,12 +61,14 @@ $signupForm.on("submit", signup);
  * Remove the user's credentials from localStorage and refresh the page
  */
 function logout(evt) {
-  console.debug("logout", evt);
+  console.debug("logout", evt); // Log the event for debugging
+  // Clear all data from localStorage to log out the user
   localStorage.clear();
+  // Reload the page to reset the state
   location.reload();
 }
 
-// Attach event listener for the logout button click
+// Attach event listener to handle logout button click
 $navLogOut.on("click", logout);
 
 /******************************************************************************
@@ -75,14 +79,14 @@ $navLogOut.on("click", logout);
  * the user automatically. This function is called on page load, just once.
  */
 async function checkForRememberedUser() {
-  console.debug("checkForRememberedUser");
-  const token = localStorage.getItem("token");
-  const username = localStorage.getItem("username");
+  console.debug("checkForRememberedUser"); // Log for debugging
+  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+  const username = localStorage.getItem("username"); // Retrieve the username from localStorage
 
-  // If there are no credentials stored, return false
+  // If no credentials are stored, return false
   if (!token || !username) return false;
 
-  // Attempt to log in using stored credentials
+  // Attempt to log in using the stored credentials and get the User instance
   currentUser = await User.loginViaStoredCredentials(token, username);
 }
 
@@ -90,10 +94,11 @@ async function checkForRememberedUser() {
  * remain logged in when the page is refreshed or revisited.
  */
 function saveUserCredentialsInLocalStorage() {
-  console.debug("saveUserCredentialsInLocalStorage");
+  console.debug("saveUserCredentialsInLocalStorage"); // Log for debugging
+  // If a user is currently logged in, store their token and username
   if (currentUser) {
-    localStorage.setItem("token", currentUser.loginToken);
-    localStorage.setItem("username", currentUser.username);
+    localStorage.setItem("token", currentUser.loginToken); // Save the token
+    localStorage.setItem("username", currentUser.username); // Save the username
   }
 }
 
@@ -108,12 +113,12 @@ function saveUserCredentialsInLocalStorage() {
  * - Generate the user profile part of the page
  */
 function updateUIOnUserLogin() {
-  console.debug("updateUIOnUserLogin");
+  console.debug("updateUIOnUserLogin"); // Log for debugging
 
-  // Show the list of all stories
+  // Show the list of all stories on the page
   $allStoriesList.show();
 
-  // Update the navigation bar for the logged-in user
+  // Update the navigation bar to reflect the user's logged-in status
   updateNavOnLogin();
 }
 

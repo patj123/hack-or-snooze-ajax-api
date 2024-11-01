@@ -1,58 +1,102 @@
 /* Lists of stories */
 
-/* Styling for the list container that holds all the stories */
 .stories-list {
-  margin: 20px 5px;
-  /* Add margin around the story list for spacing */
+  margin: 18px 8px;
+  /* Slightly adjusted margins */
+  padding-left: 0;
+  /* Removed default padding for a cleaner look */
 }
 
-/* Styling for each individual story item in the list */
 .stories-list>li {
-  color: gray;
-  /* Set the text color to gray */
-  font-size: 0.8rem;
-  /* Set the font size */
-  margin: 10px 0;
-  /* Add vertical spacing between story items */
-}
-
-/* Loading message that appears while stories are being fetched */
-#stories-loading-msg {
-  font-weight: bold;
-  /* Make the text bold */
-  font-size: 150%;
-  /* Increase the font size significantly */
-  margin: 20px 30px;
-  /* Add margin around the message */
-}
-
-/* Individual stories */
-
-/* Link styling for story titles */
-.story-link {
-  color: black;
-  /* Set the text color to black */
+  color: #707070;
+  /* Softer gray color for text */
   font-size: 0.85rem;
-  /* Set the font size */
-  font-weight: normal;
-  /* Use normal font weight */
-  margin: 18px 0;
-  /* Add vertical margin for spacing */
+  /* Slightly increased font size */
+  margin: 12px 0;
+  /* Adjusted margin between list items */
+  border-bottom: 1px dashed #dcdcdc;
+  /* Changed to a dashed border for distinction */
+  padding-bottom: 8px;
+  /* Reduced padding for a tighter layout */
+}
+
+#favorited-stories,
+#my-stories {
+  list-style-type: circle;
+  /* Use circle bullets for a unique look */
+  padding-left: 25px;
+  /* Increased padding for better indentation */
+}
+
+#stories-loading-msg {
+  font-weight: 700;
+  /* Adjusted font weight */
+  font-size: 1.6rem;
+  /* Changed to use rem units */
+  margin: 25px 35px;
+  /* Adjusted margin for spacing */
+  text-align: center;
+  /* Center the loading message */
+}
+
+/* Individual story elements */
+
+.star,
+.trash-can {
+  font-size: 0.8rem;
+  /* Slightly larger icon size */
+  margin: 0 8px;
+  /* Increased space between icons */
+  cursor: pointer;
+  /* Keep the cursor as a pointer */
+  transition: color 0.2s ease-in-out;
+  /* Smooth color transition */
+}
+
+.trash-can:hover {
+  color: firebrick;
+  /* Darker red color for hover */
+}
+
+.star:hover {
+  color: goldenrod;
+  /* Golden color for hover effect */
+}
+
+.story-link {
+  color: #333;
+  /* Darker gray for better contrast */
+  font-size: 0.9rem;
+  /* Slightly larger font size */
+  font-weight: 400;
+  /* Normal font weight */
+  margin: 20px 0;
+  /* Increased vertical margin */
 }
 
 .story-link:hover {
-  text-decoration: none;
-  /* Remove the underline on hover */
+  text-decoration: underline;
+  /* Underline on hover for emphasis */
 }
 
-/* Author information styling */
 .story-author {
-  margin-left: 2em;
-  /* Add left margin to separate the author from the title */
+  margin-left: 1.8em;
+  /* Slightly reduced left margin */
+  font-size: 0.9rem;
+  /* Larger font size for better readability */
+  color: #228B22;
+  /* Changed to a more vibrant green */
+  padding: 5px 0;
+  /* Adjusted padding */
 }
 
-/* User information styling */
 .story-user {
   display: block;
-  /* Make the user info a block element */
+  /* Keep block display */
+  margin-left: 1.8em;
+  /* Match the margin with the author */
+  font-size: 0.9rem;
+  /* Adjusted font size */
+  color: #FF8C00;
+  /* Darker orange for better visibility */
 }

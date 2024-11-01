@@ -1,53 +1,54 @@
 /* Login and signup forms */
 
-/* Button styling for all account forms */
 .account-form button {
-  width: 4rem;
-  /* Set the default button width */
-  margin-left: 80px;
-  /* Add left margin to position the button */
-  border: none;
-  /* Remove default border */
-  border-radius: 4px;
-  /* Round the corners of the button */
-  padding: 8px;
-  /* Add padding for a better click area */
-  font-size: 0.85rem;
-  /* Set the font size */
-  background-color: #007bff;
-  /* Use a blue background color */
-  color: white;
-  /* Set the text color to white */
-  cursor: pointer;
-  /* Change the cursor to a pointer on hover */
-  transition: background-color 0.2s;
-  /* Smooth transition for hover effect */
+  width: 4.5rem;
+  /* Slightly wider buttons */
+  margin-left: 75px;
+  /* Adjusted left margin for a balanced layout */
+  padding: 6px;
+  /* Added padding for better button click area */
+  border-radius: 3px;
+  /* Added a subtle border radius */
+  transition: background-color 0.3s;
+  /* Smooth transition effect */
 }
 
-/* Button hover effect */
-.account-form button:hover {
-  background-color: #0056b3;
-  /* Darken the button color on hover */
-}
-
-/* Specific styling for the signup form button */
 #signup-form button {
-  width: 8rem;
-  /* Make the signup button wider */
+  width: 8.5rem;
+  /* Increased width slightly */
+  font-weight: bold;
+  /* Made the text bold for emphasis */
 }
 
-/* Container for account forms */
 .account-forms-container {
-  padding-left: 20px;
-  /* Add left padding for spacing */
-  margin-top: 20px;
-  /* Add some top margin to separate from other elements */
+  padding: 15px 25px;
+  /* Increased overall padding for a spacious feel */
   background-color: #f9f9f9;
   /* Light background color for contrast */
-  border: 1px solid #ddd;
-  /* Add a subtle border */
   border-radius: 5px;
-  /* Round the corners of the container */
-  padding: 20px;
-  /* Add padding inside the container */
+  /* Rounded corners for a softer look */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for depth */
+}
+
+/* User profile */
+
+.user-profile-box {
+  padding: 12px 25px 25px;
+  /* Increased padding for better spacing */
+  font-size: 0.95rem;
+  /* Slightly larger font size for readability */
+  background-color: #fff;
+  /* White background for clarity */
+  border: 1px solid #e0e0e0;
+  /* Light border for structure */
+  border-radius: 4px;
+  /* Rounded corners for a modern look */
+}
+
+.user-profile-box>* {
+  margin: 12px 0;
+  /* Increased margin for more spacing between elements */
+  color: #333;
+  /* Darker text color for better contrast */
 }

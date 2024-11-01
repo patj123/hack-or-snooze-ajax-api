@@ -1,97 +1,126 @@
 "use strict";
 
-// This is the global list of stories, an instance of StoryList
+// Global variable to hold the list of stories as an instance of StoryList
 let storyList;
 
-/** 
- * Get and show stories when the site first loads.
- * This function fetches stories from the server and displays them.
+/**
+ * Fetch and display stories when the site loads for the first time.
+ * This function initializes the story list and populates it in the DOM.
  */
-async function getAndShowStoriesOnStart() {
-  // Fetch the stories from the server and store in the global storyList variable
+async function getAndDisplayStoriesOnLoad() {
+  // Retrieve stories from the API and assign them to the global variable
   storyList = await StoryList.getStories();
 
-  // Remove the loading message once stories are loaded
+  // Remove the loading message after stories are fetched
   $storiesLoadingMsg.remove();
 
-  // Call the function to display stories on the page
-  putStoriesOnPage();
+  // Call the function to render and display stories
+  renderStoriesOnPage();
 }
 
 /**
- * A render method to generate HTML for an individual Story instance
+ * Generates the HTML for a single story and returns it.
  * - story: an instance of Story
- * Returns the markup for the story.
+ * - showDeleteBtn: whether to show a delete button
+ * Returns the HTML markup wrapped in a jQuery object.
  */
-function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
+function createStoryMarkup(story, showDeleteBtn = false) {
+  // console.debug("createStoryMarkup", story);
 
-  // Get the hostname from the story's URL
+  // Extract the hostname from the story URL
   const hostName = story.getHostName();
 
-  // Return a jQuery object containing the HTML markup for the story
+  // Check if the current user is logged in to display the favorite star
+  const showStarIcon = Boolean(currentUser);
+
+  // Construct and return the story HTML markup
   return $(`
     <li id="${story.storyId}">
-      <a href="${story.url}" target="a_blank" class="story-link">
-        ${story.title}
-      </a>
-      <small class="story-hostname">(${hostName})</small>
-      <small class="story-author">by ${story.author}</small>
-      <small class="story-user">posted by ${story.username}</small>
+      <div>
+        ${showDeleteBtn ? generateDeleteButtonHTML() : ""}
+        ${showStarIcon ? generateStarHTML(story, currentUser) : ""}
+        <a href="${story.url}" target="_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <div class="story-author">by ${story.author}</div>
+        <div class="story-user">posted by ${story.username}</div>
+      </div>
     </li>
   `);
 }
 
-/** 
- * Gets the list of stories from the server, generates their HTML, and adds them to the page.
- * This function loops through all stories in the story list and appends them to the DOM.
+/**
+ * Create the HTML for a delete button and return it as a string.
  */
-function putStoriesOnPage() {
-  console.debug("putStoriesOnPage");
+function generateDeleteButtonHTML() {
+  return `
+    <span class="delete-icon">
+      <i class="fas fa-trash"></i>
+    </span>`;
+}
 
-  // Clear out the existing stories in the list
+/**
+ * Create the HTML for a favorite or not favorite star icon.
+ * - story: the Story instance
+ * - user: the current User instance
+ */
+function generateStarHTML(story, user) {
+  const isFavorited = user.isFavorite(story);
+  const starClass = isFavorited ? "fas" : "far";
+  return `
+    <span class="favorite-star">
+      <i class="${starClass} fa-star"></i>
+    </span>`;
+}
+
+/**
+ * Render and display the list of stories on the page.
+ * This function clears the current stories and adds the fetched stories to the DOM.
+ */
+function renderStoriesOnPage() {
+  console.debug("renderStoriesOnPage");
+
+  // Clear the existing stories from the DOM
   $allStoriesList.empty();
 
-  // Loop through each story in the story list
+  // Iterate over the list of stories and generate HTML for each one
   for (let story of storyList.stories) {
-    // Generate HTML markup for the story
-    const $story = generateStoryMarkup(story);
-
-    // Append the story markup to the stories list in the DOM
-    $allStoriesList.append($story);
+    const $storyMarkup = createStoryMarkup(story);
+    $allStoriesList.append($storyMarkup);
   }
 
-  // Make the stories list visible
+  // Show the updated list of stories
   $allStoriesList.show();
 }
 
-/** 
- * Handle the submission of the new story form.
- * This function creates a new story and updates the story list.
+/**
+ * Handle the event for submitting a new story.
+ * This function adds a new story and updates the DOM accordingly.
  */
-async function submitNewStory(evt) {
-  evt.preventDefault(); // Prevent the default form submission behavior
-  console.debug("submitNewStory");
+async function handleStorySubmission(evt) {
+  evt.preventDefault(); // Prevent the default form submission
+  console.debug("handleStorySubmission");
 
-  // Get the data from the new story form fields
-  const title = $("#story-title").val();
-  const author = $("#story-author").val();
-  const url = $("#story-url").val();
+  // Collect story details from the form fields
+  const title = $("#create-title").val();
+  const author = $("#create-author").val();
+  const url = $("#create-url").val();
 
-  // Create a new story object with the form data
-  const newStoryData = { title, author, url };
+  // Construct a new story object with the form data
+  const storyData = { title, author, url };
 
-  // Use the storyList instance to add the new story, passing the current user
-  const newStory = await storyList.addStory(currentUser, newStoryData);
+  // Add the story using the StoryList instance and current user
+  const addedStory = await storyList.addStory(currentUser, storyData);
 
-  // Generate HTML for the new story and add it to the top of the stories list
-  const $storyMarkup = generateStoryMarkup(newStory);
-  $allStoriesList.prepend($storyMarkup);
+  // Generate the HTML for the new story and add it to the list
+  const $storyHTML = createStoryMarkup(addedStory);
+  $allStoriesList.prepend($storyHTML);
 
-  // Hide the new story form and reset its input fields
-  $newStoryForm.hide();
-  $newStoryForm.trigger("reset");
+  // Hide and reset the story form after submission
+  $submitForm.slideUp("slow");
+  $submitForm.trigger("reset");
 }
 
-// Attach an event handler for the submission of the new story form
-$newStoryForm.on("submit", submitNewStory);
+// Attach an event listener to handle story form submissions
+$submitForm.on("submit", handleStorySubmission);

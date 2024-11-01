@@ -1,179 +1,184 @@
 /* General typography */
 
 body {
-  font-family: Arimo, sans-serif;
-  /* Set the main font for the body */
-  margin: 8px 7.5vw;
-  /* Add margin around the body for spacing */
+  font-family: "Arimo", sans-serif;
+  /* Font styling for the body */
+  margin: 10px 8vw;
+  /* Adjust margin for a different layout */
+  min-height: 100vh;
+  /* Ensure the body takes the full height of the viewport */
+  background: radial-gradient(circle, #eeaecb 0%, #94bbe9 100%);
+  /* Updated gradient background */
 }
 
 h1 {
-  font-size: 1.1rem;
-  /* Set the font size for h1 headings */
-  margin: 0;
-  /* Remove default margin */
+  font-size: 1.2rem;
+  /* Slightly increased font size for h1 */
+  margin-bottom: 5px;
+  /* Added space below h1 */
 }
 
 h4 {
-  font-size: 1rem;
-  /* Set the font size for h4 headings */
-  margin: 0;
-  /* Remove default margin */
+  font-size: 1.1rem;
+  /* Increased font size for h4 */
+  margin-top: 0;
+  /* Removed top margin */
 }
 
 h5 {
-  font-size: 0.9rem;
-  /* Set the font size for h5 headings */
-  font-weight: lighter;
-  /* Use a lighter font weight */
+  font-size: 0.95rem;
+  /* Adjusted font size for h5 */
+  font-weight: 300;
+  /* Lighter font weight */
 }
 
 a {
   text-decoration: none;
   /* Remove underline from links */
   color: inherit;
-  /* Inherit the color from the parent element */
+  /* Inherit text color */
 }
 
 a:hover {
   text-decoration: underline;
-  /* Add underline on hover for links */
+  /* Underline links on hover */
 }
 
 /* Site layout */
 
-/* Main container for the page content */
+/* Base container for the main content area */
 .container {
   display: flex;
   /* Use flexbox for layout */
   flex-direction: column;
-  /* Arrange items in a column */
-  align-self: center;
-  /* Center the container horizontally */
-  background-color: #f6f6ef;
-  /* Set a light background color */
+  /* Stack items vertically */
+  justify-content: flex-start;
+  /* Align items at the start */
+  background-color: #f9f9f2;
+  /* Slightly lighter background */
+  padding: 10px;
+  /* Added padding for spacing */
+}
+
+.stories-container {
+  max-height: 85vh;
+  /* Limit the height for scrolling */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
 }
 
 .hidden {
   display: none;
-  /* Hide elements with this class */
+  /* Hide elements by default */
 }
 
-/* Forms */
+/* Forms styling */
 
-/* Style for all forms */
 form {
   display: flex;
   /* Use flexbox for form layout */
   flex-direction: column;
-  /* Arrange form elements in a column */
-  margin: 8px 18px 0;
-  /* Add margin for spacing */
+  /* Arrange form elements vertically */
+  padding: 10px 20px;
+  /* Adjust padding for form */
 }
 
 form>* {
-  margin: 10px 0;
-  /* Add margin between form elements */
+  margin: 12px 0;
+  /* Increased margin for better spacing */
 }
 
-/* Labels for form inputs */
 form label {
-  font-size: 0.9rem;
-  /* Set the font size for labels */
-  font-weight: 700;
-  /* Use a bold font weight */
+  font-size: 0.85rem;
+  /* Smaller font size for labels */
+  font-weight: 600;
+  /* Slightly lighter font weight */
   display: inline-block;
-  /* Display labels as inline blocks */
-  width: 3.5rem;
-  /* Set a fixed width for labels */
-  text-align: right;
-  /* Align text to the right */
-  margin-right: 5px;
-  /* Add space between the label and input */
+  /* Inline-block display for labels */
+  width: 80px;
+  /* Wider label width */
+  text-align: left;
+  /* Align labels to the left */
+  margin-bottom: 4px;
+  /* Space below labels */
 }
 
-/* Input fields */
 form input {
-  font-size: 0.8rem;
-  /* Set the font size for input fields */
-  border: none;
-  /* Remove default border */
-  border-radius: 2px;
-  /* Round the corners of input fields */
-  padding: 8px;
-  /* Add padding for spacing */
-  width: 300px;
-  /* Set a fixed width for input fields */
-  box-shadow: 0 0 3px 1px lightgray;
-  /* Add a light shadow for depth */
+  font-size: 0.85rem;
+  /* Adjusted input font size */
+  border: 1px solid #ccc;
+  /* Added border for inputs */
+  border-radius: 4px;
+  /* Rounded corners for inputs */
+  padding: 10px;
+  /* Increased padding for inputs */
+  width: 100%;
+  /* Full width for responsiveness */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for inputs */
 }
 
 form input:focus {
   outline: none;
   /* Remove default outline */
-  box-shadow: 0 0 4px 1px darkgray;
-  /* Add a darker shadow on focus */
+  border-color: #777;
+  /* Darker border on focus */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  /* Enhanced shadow on focus */
 }
 
-/* Submit buttons */
 form>button {
-  width: 4rem;
-  /* Set a fixed width for buttons */
-  margin: 5px 0 15px 65px;
-  /* Add margin for spacing */
+  width: auto;
+  /* Automatic width for button */
+  padding: 10px 15px;
+  /* Adjusted padding for button */
   border: none;
   /* Remove default border */
-  border-radius: 4px;
-  /* Round the corners of buttons */
-  padding: 8px;
-  /* Add padding for spacing */
-  font-size: 0.85rem;
-  /* Set the font size for buttons */
-  background-color: lightslategray;
-  /* Set background color */
-  color: white;
-  /* Set text color */
+  border-radius: 5px;
+  /* Rounded corners for button */
+  font-size: 0.9rem;
+  /* Larger font size for button */
+  background-color: #5a5a5a;
+  /* Darker background for button */
+  color: #fff;
+  /* White text color for button */
   cursor: pointer;
-  /* Change cursor to pointer on hover */
-  transition: all 0.15s;
-  /* Add transition for hover effect */
+  /* Pointer cursor on hover */
+  transition: background-color 0.2s ease;
+  /* Smooth transition for background color */
 }
 
 form>button:hover {
-  background-color: dimgray;
-  /* Change background color on hover */
+  background-color: #3e3e3e;
+  /* Darker color on hover */
 }
 
-/* Horizontal line in forms */
 form>hr {
-  margin: 0;
-  /* Remove default margin */
-  border: 1px solid lightgray;
-  /* Add a light gray border */
+  margin-top: 5px;
+  /* Space above horizontal rule */
+  border: 1px solid #ddd;
+  /* Lighter color for horizontal rule */
 }
 
-/* Labels for login inputs with a wider width */
 .login-input label {
-  width: 70px;
-  /* Set a wider width for login labels */
+  width: 100px;
+  /* Adjusted width for login input labels */
 }
 
-/* Responsive design for mobile devices */
+/* Responsive design adjustments */
 
-/* Adjustments for screens up to 576px wide */
 @media screen and (max-width: 576px) {
   body {
-    margin: 0;
-    /* Remove body margin for smaller screens */
+    margin: 5px;
+    /* Reduced margin for smaller screens */
   }
 }
 
-/* Adjustments for screens 992px and wider */
 @media screen and (min-width: 992px) {
   body {
-    max-width: 900px;
-    /* Set a maximum width for the body */
-    margin: 8px auto;
-    /* Center the body and add vertical margin */
+    max-width: 960px;
+    /* Slightly wider max width */
+    margin: 10px auto;
+    /* Center body content */
   }
 }

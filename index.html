@@ -1,27 +1,20 @@
 <!DOCTYPE html>
+
+<!-- Main HTML for Hack or Snooze Web Application
+     - Developed and enhanced for better readability and functionality
+-->
+
 <html lang="en">
-<!-- This HTML document represents the entire webpage -->
 
 <head>
-  <!-- The head section contains metadata and links to external resources -->
-
   <meta charset="UTF-8">
-  <!-- Specifies the character encoding for the HTML document -->
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Ensures the webpage is responsive and scales correctly on different devices -->
-
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- Sets the rendering mode for Internet Explorer to use the latest standards -->
+  <title>Hack or Snooze - Your Story Hub</title>
 
-  <title>Hack or Snooze</title>
-  <!-- Defines the title of the webpage, shown in the browser tab -->
-
-  <!-- Link to external FontAwesome stylesheet for icons -->
+  <!-- External CSS for icons and styling -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
     integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
-  <!-- Link to external CSS files for styling the webpage -->
   <link rel="stylesheet" href="css/site.css">
   <link rel="stylesheet" href="css/user.css">
   <link rel="stylesheet" href="css/stories.css">
@@ -29,110 +22,109 @@
 </head>
 
 <body>
-  <!-- The body section contains all the content and elements visible on the webpage -->
 
   <!-- Navigation bar at the top of the page -->
   <nav>
     <div class="navbar-brand">
-      <!-- Link to show all stories -->
       <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
     </div>
+    <div class="main-nav-links hidden">
+      <span>|</span>
+      <a class="nav-link" href="#" id="nav-submit-story">Submit Story</a>
+      <span>|</span>
+      <a class="nav-link" href="#" id="nav-favorites">Favorites</a>
+      <span>|</span>
+      <a class="nav-link" href="#" id="nav-my-stories">My Stories</a>
+    </div>
     <div class="nav-right">
-      <!-- Link to show login/signup forms -->
-      <a class="nav-link" href="#" id="nav-login">login/signup</a>
-
-      <!-- Link to show the story submission form -->
-      <a class="nav-link" href="#" id="nav-submit">submit</a> <!-- New "submit" link -->
-
-      <!-- User profile link (hidden by default) -->
-      <a class="nav-link hidden" id="nav-user-profile"></a>
-
-      <!-- Logout link (hidden by default) -->
-      <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
+      <a class="nav-link" href="#" id="nav-login">Login/Signup</a>
+      <a class="nav-link" href="#" id="nav-user-profile"></a>
+      <a class="hidden" id="nav-logout" href="#"><small>(Logout)</small></a>
     </div>
   </nav>
 
-  <!-- Section for displaying stories -->
-  <section class="stories-container container">
-    <!-- Message shown while stories are loading -->
-    <div id="stories-loading-msg">Loading&hellip;</div>
+  <!-- Container for displaying stories and related forms -->
+  <section id="stories-container" class="stories-container container">
 
-    <!-- List of all stories -->
-    <ol id="all-stories-list" class="stories-list"></ol>
-  </section>
-
-  <!-- Section for login and signup forms -->
-  <section class="account-forms-container container">
-    <!-- Login form (hidden by default) -->
-    <form action="#" id="login-form" class="account-form hidden" method="post">
-      <h4>Login</h4>
-      <div class="login-input">
-        <!-- Username input field -->
-        <label for="login-username">username</label>
-        <input id="login-username" autocomplete="current-username">
+    <!-- Form for submitting a new story -->
+    <form action="" class="hidden" id="submit-form">
+      <div>
+        <label for="create-author">Author:</label>
+        <input id="create-author" required placeholder="Author Name">
       </div>
-      <div class="login-input">
-        <!-- Password input field -->
-        <label for="login-password">password</label>
-        <input id="login-password" type="password" autocomplete="current-password">
+      <div>
+        <label for="create-title">Title:</label>
+        <input id="create-title" required placeholder="Story Title">
       </div>
-      <!-- Login button -->
-      <button type="submit">login</button>
+      <div>
+        <label for="create-url">URL:</label>
+        <input id="create-url" required type="url" placeholder="Story URL">
+      </div>
+      <button type="submit">Submit</button>
       <hr>
     </form>
 
-    <!-- Signup form (hidden by default) -->
+    <!-- Message displayed while stories are loading -->
+    <div id="stories-loading-msg">Loading...</div>
+
+    <!-- Lists for all stories, favorited stories, and user stories -->
+    <ol id="all-stories-list" class="stories-list"></ol>
+    <ol id="favorited-stories" class="hidden stories-list"></ol>
+    <ol id="my-stories" class="hidden stories-list"></ol>
+
+  </section>
+
+  <!-- Login and Signup Forms -->
+  <section class="account-forms-container container">
+    <!-- Login Form -->
+    <form action="#" id="login-form" class="account-form hidden" method="post">
+      <h4>Login</h4>
+      <div class="login-input">
+        <label for="login-username">Username:</label>
+        <input id="login-username" autocomplete="current-username">
+      </div>
+      <div class="login-input">
+        <label for="login-password">Password:</label>
+        <input id="login-password" type="password" autocomplete="current-password">
+      </div>
+      <button type="submit">Log In</button>
+      <hr>
+    </form>
+
+    <!-- Signup Form -->
     <form action="#" id="signup-form" class="account-form hidden" method="post">
       <h4>Create Account</h4>
       <div class="login-input">
-        <!-- Name input field -->
-        <label for="signup-name">name</label>
+        <label for="signup-name">Name:</label>
         <input id="signup-name" autocapitalize="words">
       </div>
       <div class="login-input">
-        <!-- Username input field -->
-        <label for="signup-username">username</label>
+        <label for="signup-username">Username:</label>
         <input id="signup-username" autocomplete="new-username">
       </div>
       <div class="login-input">
-        <!-- Password input field -->
-        <label for="signup-password">password</label>
+        <label for="signup-password">Password:</label>
         <input id="signup-password" autocomplete="new-password" type="password">
       </div>
-      <!-- Create account button -->
-      <button type="submit">create account</button>
-    </form>
-
-    <!-- New story submission form (hidden by default) -->
-    <form id="new-story-form" class="account-form hidden" method="post">
-      <h4>Submit a New Story</h4>
-      <div>
-        <!-- Title input field for the new story -->
-        <label for="story-title">Title:</label>
-        <input id="story-title" type="text" required>
-      </div>
-      <div>
-        <!-- Author input field for the new story -->
-        <label for="story-author">Author:</label>
-        <input id="story-author" type="text" required>
-      </div>
-      <div>
-        <!-- URL input field for the new story -->
-        <label for="story-url">URL:</label>
-        <input id="story-url" type="url" required>
-      </div>
-      <!-- Submit button for the new story -->
-      <button type="submit">Submit</button>
+      <button type="submit">Sign Up</button>
     </form>
   </section>
 
-  <!-- Script tags to include external libraries and custom JavaScript files -->
-  <script src="https://unpkg.com/jquery"></script>
-  <!-- Include jQuery library -->
-  <script src="https://unpkg.com/axios/dist/axios.js"></script>
-  <!-- Include Axios library for making HTTP requests -->
+  <!-- User Profile Section -->
+  <section id="user-profile" class="hidden">
+    <div class="user-profile-box container">
+      <h4>User Profile Info</h4>
+      <section>
+        <div>Name: <span id="profile-name"></span></div>
+        <div>Username: <span id="profile-username"></span></div>
+        <div>Account Created: <span id="profile-account-date"></span></div>
+      </section>
+    </div>
+  </section>
 
-  <!-- Include custom JavaScript files for app functionality -->
+  <!-- JavaScript Libraries and Custom Scripts -->
+  <script src="https://unpkg.com/jquery"></script>
+  <script src="https://unpkg.com/axios/dist/axios.js"></script>
   <script src="js/models.js"></script>
   <script src="js/main.js"></script>
   <script src="js/nav.js"></script>

@@ -1,73 +1,79 @@
 "use strict";
 
-// Cache commonly used DOM elements to avoid repeatedly finding them
-const $body = $("body"); // Select the body element
+// Store commonly used DOM elements to avoid repeated selections
+const $body = $("body"); // Main body of the document
 
-const $storiesLoadingMsg = $("#stories-loading-msg"); // Loading message element
-const $allStoriesList = $("#all-stories-list"); // List element for all stories
+const $storiesLoadingMsg = $("#stories-loading-msg"); // Message shown while stories are loading
+const $allStoriesList = $("#all-stories-list"); // Container for all story items
+const $favoritedStories = $("#favorited-stories"); // Container for favorited stories
+const $ownStories = $("#my-stories"); // Container for user's own stories
+const $storiesContainer = $("#stories-container"); // Main container for all story sections
 
-const $loginForm = $("#login-form"); // Login form element
-const $signupForm = $("#signup-form"); // Signup form element
+// A selector for accessing all three story lists collectively
+const $storiesLists = $(".stories-list");
 
-const $navLogin = $("#nav-login"); // Navbar "login" link
-const $navSubmit = $("#nav-submit"); // Navbar "submit" link (for adding new stories)
-const $navUserProfile = $("#nav-user-profile"); // Navbar link for the user profile
-const $navLogOut = $("#nav-logout"); // Navbar "logout" link
+const $loginForm = $("#login-form"); // Form for logging in
+const $signupForm = $("#signup-form"); // Form for signing up
 
-const $newStoryForm = $("#new-story-form"); // Form element for submitting new stories
+const $submitForm = $("#submit-form"); // Form for submitting new stories
+
+// Navbar elements for navigation and user interactions
+const $navSubmitStory = $("#nav-submit-story"); // Link for submitting a new story
+const $navLogin = $("#nav-login"); // Link to open login form
+const $navUserProfile = $("#nav-user-profile"); // Link to view user profile
+const $navLogOut = $("#nav-logout"); // Link to log out of the account
+
+const $userProfile = $("#user-profile"); // User profile section
 
 /**
- * Hide all page components, making it easier to selectively show specific ones.
- * This function is useful for resetting the page view before displaying
- * specific content (e.g., showing the login form or story list).
+ * Hides all page elements to reset the view.
+ * This function is helpful for displaying specific components (like forms or story lists)
+ * without overlap from previously shown content.
  */
 function hidePageComponents() {
   const components = [
-    $allStoriesList, // List of all stories
-    $loginForm, // Login form
-    $signupForm, // Signup form
-    $newStoryForm, // Story submission form
+    $storiesLists, // Hide all story lists
+    $submitForm, // Hide the new story form
+    $loginForm, // Hide the login form
+    $signupForm, // Hide the signup form
+    $userProfile, // Hide the user profile
   ];
-  // Hide each component in the list
-  components.forEach(c => c.hide());
+  // Loop through each component and hide it
+  components.forEach(component => component.hide());
 }
 
 /**
- * Overall function to start the app.
- * This function is called when the DOM is fully loaded.
+ * Initializes the app by loading user data and fetching stories.
+ * Called when the DOM is fully loaded to set up the initial UI and data.
  */
 async function start() {
   console.debug("start");
 
-  // Check if there is a remembered user in localStorage and log them in
+  // Check if there's a saved user in localStorage and log them in if present
   await checkForRememberedUser();
-  // Fetch and display stories on the homepage
+  // Load and display stories on the homepage
   await getAndShowStoriesOnStart();
 
-  // If there is a logged-in user, update the UI accordingly
+  // If a user is logged in, update the UI to reflect their status
   if (currentUser) updateUIOnUserLogin();
 }
 
 /**
- * Event handler for clicking the "submit" link in the navbar.
- * When the "submit" link is clicked, this function hides other components
- * and shows the story submission form.
+ * Event listener for the "submit" link in the navigation bar.
+ * When clicked, it hides other page components and shows the form
+ * for adding a new story.
  */
-$navSubmit.on("click", function () {
-  console.debug("navSubmit clicked");
-  hidePageComponents(); // Hide all other components
-  $newStoryForm.show(); // Show the story submission form
+$navSubmitStory.on("click", function () {
+  console.debug("Submit story link clicked");
+  hidePageComponents(); // Hide everything else
+  $submitForm.show(); // Display the story submission form
 });
 
 /**
- * Once the DOM is fully loaded, begin the app.
- * This initializes the app by calling the `start` function.
- * 
- * NOTE: The console warning message instructs the student to enable
- * "Verbose" logging in the browser console to see debug messages.
+ * This message serves as a reminder for enabling "Verbose" logs in the console.
+ * Helpful debug information will be shown if the correct logging level is set.
  */
-console.warn("HEY STUDENT: This program sends many debug messages to" +
-  " the console. If you don't see the message 'start' below this, you're not" +
-  " seeing those helpful debug messages. In your browser console, click on" +
-  " menu 'Default Levels' and add Verbose");
-$(start); // Start the app when the DOM is ready
+console.warn("STUDENT REMINDER: This app logs detailed debug messages." +
+  " If you don't see the 'start' message, ensure you have 'Verbose' logging enabled" +
+  " in your browser's console under 'Default Levels'.");
+$(start); // Calls the start function when the DOM is ready

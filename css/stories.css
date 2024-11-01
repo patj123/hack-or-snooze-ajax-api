@@ -1,39 +1,58 @@
 /* Lists of stories */
 
+/* Styling for the list container that holds all the stories */
 .stories-list {
   margin: 20px 5px;
+  /* Add margin around the story list for spacing */
 }
 
-.stories-list > li {
+/* Styling for each individual story item in the list */
+.stories-list>li {
   color: gray;
+  /* Set the text color to gray */
   font-size: 0.8rem;
+  /* Set the font size */
   margin: 10px 0;
+  /* Add vertical spacing between story items */
 }
 
+/* Loading message that appears while stories are being fetched */
 #stories-loading-msg {
   font-weight: bold;
+  /* Make the text bold */
   font-size: 150%;
+  /* Increase the font size significantly */
   margin: 20px 30px;
+  /* Add margin around the message */
 }
-
 
 /* Individual stories */
 
+/* Link styling for story titles */
 .story-link {
   color: black;
+  /* Set the text color to black */
   font-size: 0.85rem;
+  /* Set the font size */
   font-weight: normal;
+  /* Use normal font weight */
   margin: 18px 0;
+  /* Add vertical margin for spacing */
 }
 
 .story-link:hover {
   text-decoration: none;
+  /* Remove the underline on hover */
 }
 
+/* Author information styling */
 .story-author {
   margin-left: 2em;
+  /* Add left margin to separate the author from the title */
 }
 
+/* User information styling */
 .story-user {
   display: block;
+  /* Make the user info a block element */
 }

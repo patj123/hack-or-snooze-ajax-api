@@ -1,23 +1,49 @@
-/* Navigation bar */
-
+/* Navigation bar styles */
 nav {
   display: flex;
+  /* Use flexbox for layout */
   background-color: #ff6600;
+  /* Set the background color to orange */
   align-items: center;
+  /* Center items vertically */
   padding: 5px 20px;
+  /* Add padding for spacing */
   border-radius: 3px 3px 0 0;
+  /* Round the top corners */
 }
 
 .navbar-brand {
   font-weight: bold;
+  /* Make the brand name bold */
 }
 
 .nav-link {
   font-size: 0.85rem;
+  /* Set the font size */
   margin: 0 3px;
+  /* Add horizontal spacing between links */
+  color: white;
+  /* Ensure links have a white color for readability */
+  text-decoration: none;
+  /* Remove the underline from links */
+  transition: color 0.2s;
+  /* Add a smooth color transition */
+}
+
+.nav-link:hover {
+  color: #f1f1f1;
+  /* Change the link color on hover for a subtle effect */
 }
 
 .nav-right {
   margin-left: auto;
+  /* Push the right-side links to the far right */
   text-align: right;
+  /* Align text to the right */
+}
+
+/* Hidden class for links that should be hidden initially */
+.hidden {
+  display: none;
+  /* Completely hide the element */
 }

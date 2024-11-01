@@ -3,8 +3,7 @@
 // This is the global list of the stories, an instance of StoryList
 let storyList;
 
-/** Get and show stories when site first loads. */
-
+/** Get and show stories when the site first loads. */
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
@@ -13,12 +12,11 @@ async function getAndShowStoriesOnStart() {
 }
 
 /**
- * A render method to render HTML for an individual Story instance
+ * A render method to generate HTML for an individual Story instance
  * - story: an instance of Story
  *
  * Returns the markup for the story.
  */
-
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
@@ -35,14 +33,13 @@ function generateStoryMarkup(story) {
     `);
 }
 
-/** Gets list of stories from server, generates their HTML, and puts on page. */
-
+/** Gets list of stories from the server, generates their HTML, and puts them on the page. */
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
 
   $allStoriesList.empty();
 
-  // loop through all of our stories and generate HTML for them
+  // Loop through all stories and generate HTML for each one
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
@@ -50,3 +47,32 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** Handle submission of new story form */
+async function submitNewStory(evt) {
+  evt.preventDefault();
+  console.debug("submitNewStory");
+
+  // Get the form data
+  const title = $("#story-title").val();
+  const author = $("#story-author").val();
+  const url = $("#story-url").val();
+
+  // Create the new story object
+  const newStoryData = { title, author, url };
+
+  // Add the story using the current user and storyList instance
+  const newStory = await storyList.addStory(currentUser, newStoryData);
+
+  // Generate HTML for the new story and add it to the top of the list
+  const $storyMarkup = generateStoryMarkup(newStory);
+  $allStoriesList.prepend($storyMarkup);
+
+  // Hide the new story form and reset its fields
+  $newStoryForm.hide();
+  $newStoryForm.trigger("reset");
+}
+
+// Attach event handler for the new story form submission
+$newStoryForm.on("submit", submitNewStory);
+

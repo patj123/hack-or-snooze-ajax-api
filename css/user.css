@@ -1,14 +1,53 @@
 /* Login and signup forms */
 
+/* Button styling for all account forms */
 .account-form button {
   width: 4rem;
+  /* Set the default button width */
   margin-left: 80px;
+  /* Add left margin to position the button */
+  border: none;
+  /* Remove default border */
+  border-radius: 4px;
+  /* Round the corners of the button */
+  padding: 8px;
+  /* Add padding for a better click area */
+  font-size: 0.85rem;
+  /* Set the font size */
+  background-color: #007bff;
+  /* Use a blue background color */
+  color: white;
+  /* Set the text color to white */
+  cursor: pointer;
+  /* Change the cursor to a pointer on hover */
+  transition: background-color 0.2s;
+  /* Smooth transition for hover effect */
 }
 
+/* Button hover effect */
+.account-form button:hover {
+  background-color: #0056b3;
+  /* Darken the button color on hover */
+}
+
+/* Specific styling for the signup form button */
 #signup-form button {
   width: 8rem;
+  /* Make the signup button wider */
 }
 
+/* Container for account forms */
 .account-forms-container {
   padding-left: 20px;
+  /* Add left padding for spacing */
+  margin-top: 20px;
+  /* Add some top margin to separate from other elements */
+  background-color: #f9f9f9;
+  /* Light background color for contrast */
+  border: 1px solid #ddd;
+  /* Add a subtle border */
+  border-radius: 5px;
+  /* Round the corners of the container */
+  padding: 20px;
+  /* Add padding inside the container */
 }

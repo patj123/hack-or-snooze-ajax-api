@@ -1,7 +1,6 @@
 "use strict";
 
-// So we don't have to keep re-finding things on page, find DOM elements once:
-
+// Cache commonly used DOM elements to avoid repeatedly finding them
 const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
@@ -11,38 +10,44 @@ const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
 
 const $navLogin = $("#nav-login");
+const $navSubmit = $("#nav-submit"); // New: Reference to the "submit" link in the navbar
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
 
-/** To make it easier for individual components to show just themselves, this
- * is a useful function that hides pretty much everything on the page. After
- * calling this, individual components can re-show just what they want.
- */
+const $newStoryForm = $("#new-story-form"); // New: Reference to the new story form
 
+/** Hide all page components, making it easier to selectively show specific ones. */
 function hidePageComponents() {
   const components = [
     $allStoriesList,
     $loginForm,
     $signupForm,
+    $newStoryForm, // New: Hide the new story form by default
   ];
   components.forEach(c => c.hide());
 }
 
-/** Overall function to kick off the app. */
-
+/** Overall function to start the app. */
 async function start() {
   console.debug("start");
 
-  // "Remember logged-in user" and log in, if credentials in localStorage
+  // Check if there is a remembered user and log them in
   await checkForRememberedUser();
+  // Fetch and display stories on the homepage
   await getAndShowStoriesOnStart();
 
-  // if we got a logged-in user
+  // If there is a logged-in user, update the UI accordingly
   if (currentUser) updateUIOnUserLogin();
 }
 
-// Once the DOM is entirely loaded, begin the app
+// Event handler for clicking the "submit" link in the navbar
+$navSubmit.on("click", function () {
+  console.debug("navSubmit clicked");
+  hidePageComponents();
+  $newStoryForm.show(); // Show the story submission form
+});
 
+// Once the DOM is fully loaded, start the app
 console.warn("HEY STUDENT: This program sends many debug messages to" +
   " the console. If you don't see the message 'start' below this, you're not" +
   " seeing those helpful debug messages. In your browser console, click on" +

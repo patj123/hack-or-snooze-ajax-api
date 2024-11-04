@@ -4,6 +4,34 @@
  * Handling navbar clicks and updating the navigation bar
  */
 
+// Global DOM elements used in multiple functions
+// const $allStoriesList = $("#all-stories-list");
+// const $favoritedStories = $("#favorited-stories");
+// const $ownStories = $("#my-stories");
+// const $loginForm = $("#login-form");
+// const $signupForm = $("#signup-form");
+// const $submitForm = $("#submit-form");
+// const $userProfile = $("#user-profile");
+
+/**
+ * Hides all page elements to reset the view.
+ * This function is helpful for displaying specific components
+ * (like forms or story lists) without overlap from previously shown content.
+ */
+function hidePageComponents() {
+  const components = [
+    $allStoriesList, // List of all stories
+    $favoritedStories, // List of favorite stories
+    $ownStories, // List of user's own stories
+    $loginForm, // Login form
+    $signupForm, // Signup form
+    $submitForm, // Story submission form
+    $userProfile // User profile section
+  ];
+  // Hide each component in the list
+  components.forEach(component => component.hide());
+}
+
 /** Display the main list of all stories when the site name is clicked */
 function showAllStories(evt) {
   console.debug("showAllStories", evt); // Output the event details for debugging

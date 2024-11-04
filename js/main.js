@@ -25,6 +25,9 @@ const $navLogOut = $("#nav-logout"); // Link to log out of the account
 
 const $userProfile = $("#user-profile"); // User profile section
 
+// Global variable to hold the current user
+let currentUser;
+
 /**
  * Hides all page elements to reset the view.
  * This function is helpful for displaying specific components (like forms or story lists)
@@ -40,6 +43,44 @@ function hidePageComponents() {
   ];
   // Loop through each component and hide it
   components.forEach(component => component.hide());
+}
+
+/**
+ * Fetch and display stories when the site loads for the first time.
+ * This function initializes the story list and populates it in the DOM.
+ */
+async function getAndShowStoriesOnStart() {
+  console.debug("getAndShowStoriesOnStart");
+
+  // Retrieve stories from the API and assign them to the global variable
+  storyList = await StoryList.getStories();
+
+  // Remove the loading message after stories are fetched
+  $storiesLoadingMsg.remove();
+
+  // Render and display the list of stories in the DOM
+  renderStoriesOnPage();
+}
+
+/**
+ * Check for remembered user in localStorage and log them in if present.
+ * This function retrieves the stored token and username and attempts to log the user in.
+ */
+async function checkForRememberedUser() {
+  console.debug("checkForRememberedUser");
+
+  // Get the token and username from localStorage
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
+
+  // If there are no stored credentials, return early
+  if (!token || !username) return false;
+
+  // Attempt to log in with the stored credentials
+  currentUser = await User.loginViaStoredCredentials(token, username);
+
+  // If the login fails, currentUser will be null
+  if (!currentUser) return false;
 }
 
 /**
@@ -76,4 +117,5 @@ $navSubmitStory.on("click", function () {
 console.warn("STUDENT REMINDER: This app logs detailed debug messages." +
   " If you don't see the 'start' message, ensure you have 'Verbose' logging enabled" +
   " in your browser's console under 'Default Levels'.");
+
 $(start); // Calls the start function when the DOM is ready

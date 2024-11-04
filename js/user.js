@@ -1,7 +1,7 @@
 "use strict";
 
 // Global variable to store the instance of the logged-in User
-let currentUser;
+// let currentUser;
 
 /******************************************************************************
  * User login, signup, and logout functionality

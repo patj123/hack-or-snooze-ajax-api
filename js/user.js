@@ -1,7 +1,7 @@
 "use strict";
 
 // Global variable to store the instance of the logged-in User
-// let currentUser;
+let currentUser;
 
 /******************************************************************************
  * User login, signup, and logout functionality
@@ -9,8 +9,8 @@
 
 /** Handle login form submission. Sets up the user instance if login is successful */
 async function login(evt) {
-  console.debug("login", evt); // Debug log for the login event
-  evt.preventDefault(); // Prevent default form behavior
+  console.debug("login", evt);
+  evt.preventDefault();
 
   // Collect the username and password input values
   const username = $("#login-username").val();
@@ -33,8 +33,8 @@ $loginForm.on("submit", login);
 
 /** Handle the signup form submission */
 async function signup(evt) {
-  console.debug("signup", evt); // Debug log for the signup event
-  evt.preventDefault(); // Prevent default form behavior
+  console.debug("signup", evt);
+  evt.preventDefault();
 
   // Extract the name, username, and password from the signup form
   const name = $("#signup-name").val();
@@ -61,9 +61,20 @@ $signupForm.on("submit", signup);
  * Clears the user data from local storage and refreshes the page
  */
 function logout(evt) {
-  console.debug("logout", evt); // Debug log for the logout event
+  console.debug("logout", evt);
+
   // Clear all items from local storage to log out the user
   localStorage.clear();
+
+  // Reset global user variable
+  currentUser = null;
+
+  // Hide user-specific elements and show login button
+  $navLogOut.hide();
+  $navUserProfile.hide();
+  $navLogin.show();
+  $(".main-nav-links, #nav-all, #nav-submit-story, #nav-favorites, #nav-my-stories").hide();
+
   // Refresh the page to reset the app state
   location.reload();
 }
@@ -79,9 +90,9 @@ $navLogOut.on("click", logout);
  * This function is executed when the page is loaded.
  */
 async function checkForSavedUser() {
-  console.debug("checkForSavedUser"); // Debug log for checking stored user
-  const token = localStorage.getItem("token"); // Get token from local storage
-  const username = localStorage.getItem("username"); // Get username from local storage
+  console.debug("checkForSavedUser");
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
 
   // If token or username is missing, skip automatic login
   if (!token || !username) return false;
@@ -94,8 +105,7 @@ async function checkForSavedUser() {
  * This allows the user to remain logged in even after a page refresh.
  */
 function storeUserInLocalStorage() {
-  console.debug("storeUserInLocalStorage"); // Debug log for saving user data
-  // If a user is logged in, store their token and username
+  console.debug("storeUserInLocalStorage");
   if (currentUser) {
     localStorage.setItem("token", currentUser.loginToken);
     localStorage.setItem("username", currentUser.username);
@@ -113,11 +123,24 @@ function storeUserInLocalStorage() {
  * - Show the user's profile details
  */
 function updateUIAfterLogin() {
-  console.debug("updateUIAfterLogin"); // Debug log for updating UI
+  console.debug("updateUIAfterLogin");
 
   // Make the stories list visible
   $allStoriesList.show();
 
-  // Refresh the navigation bar to reflect the logged-in user
-  updateNavForUser();
+  // Update navigation bar for logged-in user
+  updateNavOnLogin();
+}
+
+/** Update the navigation bar once the user is logged in */
+function updateNavOnLogin() {
+  console.debug("updateNavOnLogin");
+
+  // Show main navigation links and hide login link
+  $(".main-nav-links, #nav-all, #nav-submit-story, #nav-favorites, #nav-my-stories").show();
+  $navLogin.hide();
+  $navLogOut.show();
+
+  // Show the user's profile link with their username
+  $navUserProfile.text(`${currentUser.username}`).show();
 }

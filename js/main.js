@@ -1,121 +1,136 @@
-"use strict";
+"use strict"; // Strict mode to catch common coding errors
 
-// Store commonly used DOM elements to avoid repeated selections
-const $body = $("body"); // Main body of the document
+// Cache frequently accessed DOM elements to improve efficiency
+const $body = $("body"); // The main body of the document
 
-const $storiesLoadingMsg = $("#stories-loading-msg"); // Message shown while stories are loading
-const $allStoriesList = $("#all-stories-list"); // Container for all story items
-const $favoritedStories = $("#favorited-stories"); // Container for favorited stories
+const $storiesLoadingMsg = $("#stories-loading-msg"); // Message shown while stories load
+const $allStoriesList = $("#all-stories-list"); // Container for displaying all stories
+const $favoritedStories = $("#favorited-stories"); // Container for displaying favorited stories
 const $ownStories = $("#my-stories"); // Container for user's own stories
-const $storiesContainer = $("#stories-container"); // Main container for all story sections
+const $storiesContainer = $("#stories-container"); // Main container for story-related content
 
-// A selector for accessing all three story lists collectively
-const $storiesLists = $(".stories-list");
+const $storiesLists = $(".stories-list"); // Selector to access all story lists
 
-const $loginForm = $("#login-form"); // Form for logging in
-const $signupForm = $("#signup-form"); // Form for signing up
-
+const $loginForm = $("#login-form"); // Form for user login
+const $signupForm = $("#signup-form"); // Form for user signup
 const $submitForm = $("#submit-form"); // Form for submitting new stories
 
 // Navbar elements for navigation and user interactions
 const $navSubmitStory = $("#nav-submit-story"); // Link for submitting a new story
 const $navLogin = $("#nav-login"); // Link to open login form
 const $navUserProfile = $("#nav-user-profile"); // Link to view user profile
-const $navLogOut = $("#nav-logout"); // Link to log out of the account
+const $navLogOut = $("#nav-logout"); // Link to log out
 
 const $userProfile = $("#user-profile"); // User profile section
 
-// Global variable to hold the current user
+// Global variable to hold the instance of the current user
 let currentUser;
 
 /**
- * Hides all page elements to reset the view.
- * This function is helpful for displaying specific components (like forms or story lists)
- * without overlap from previously shown content.
+ * Hides all main page components to reset the view. This function is useful
+ * when switching between different sections, as it hides previously shown elements.
  */
 function hidePageComponents() {
+  // List of components to be hidden
   const components = [
-    $storiesLists, // Hide all story lists
-    $submitForm, // Hide the new story form
-    $loginForm, // Hide the login form
-    $signupForm, // Hide the signup form
-    $userProfile, // Hide the user profile
+    $storiesLists, // Hides all story lists
+    $submitForm, // Hides the new story submission form
+    $loginForm, // Hides the login form
+    $signupForm, // Hides the signup form
+    $userProfile // Hides the user profile section
   ];
-  // Loop through each component and hide it
-  components.forEach(component => component.hide());
+  components.forEach(component => component.hide()); // Hides each component
 }
 
 /**
- * Fetch and display stories when the site loads for the first time.
- * This function initializes the story list and populates it in the DOM.
+ * Fetches stories from the API and displays them on initial page load.
+ * This function initializes the story list and adds them to the DOM.
  */
 async function getAndShowStoriesOnStart() {
-  console.debug("getAndShowStoriesOnStart");
+  console.debug("getAndShowStoriesOnStart"); // Debug log for function call
 
-  // Retrieve stories from the API and assign them to the global variable
+  // Fetch the stories from the API and assign them to the global storyList variable
   storyList = await StoryList.getStories();
 
-  // Remove the loading message after stories are fetched
+  // Remove the loading message once stories are fetched
   $storiesLoadingMsg.remove();
 
-  // Render and display the list of stories in the DOM
+  // Render the stories and display them on the page
   renderStoriesOnPage();
 }
 
 /**
- * Check for remembered user in localStorage and log them in if present.
- * This function retrieves the stored token and username and attempts to log the user in.
+ * Checks for a remembered user in localStorage and logs them in if credentials are found.
+ * This function retrieves any stored user token and username, and attempts to log them in.
  */
 async function checkForRememberedUser() {
-  console.debug("checkForRememberedUser");
+  console.debug("checkForRememberedUser"); // Debug log for function call
 
-  // Get the token and username from localStorage
+  // Retrieve token and username from localStorage
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
-  // If there are no stored credentials, return early
+  // If either token or username is missing, stop here
   if (!token || !username) return false;
 
-  // Attempt to log in with the stored credentials
+  // Log in using stored credentials and set currentUser if successful
   currentUser = await User.loginViaStoredCredentials(token, username);
 
-  // If the login fails, currentUser will be null
+  // If login fails, currentUser remains null
   if (!currentUser) return false;
 }
 
 /**
- * Initializes the app by loading user data and fetching stories.
- * Called when the DOM is fully loaded to set up the initial UI and data.
+ * Initializes the app by checking for a logged-in user and loading stories.
+ * This function runs once when the DOM is fully loaded.
  */
 async function start() {
-  console.debug("start");
+  console.debug("start"); // Debug log for app start
 
-  // Check if there's a saved user in localStorage and log them in if present
+  // Check if a user is saved in localStorage and log them in if present
   await checkForRememberedUser();
-  // Load and display stories on the homepage
+
+  // Fetch and display stories on the homepage
   await getAndShowStoriesOnStart();
 
-  // If a user is logged in, update the UI to reflect their status
+  // If a user is logged in, update the UI to reflect their login status
   if (currentUser) updateUIOnUserLogin();
 }
 
 /**
- * Event listener for the "submit" link in the navigation bar.
- * When clicked, it hides other page components and shows the form
- * for adding a new story.
+ * Updates the UI based on the user’s login status.
+ * Shows/hides specific navigation links and updates the user profile link.
  */
+function updateUIOnUserLogin() {
+  // Hide the login link as the user is now logged in
+  $navLogin.hide();
+
+  // Show the logout link for the logged-in user
+  $navLogOut.show();
+
+  // Display main navigation links for logged-in users
+  $(".main-nav-links, #nav-submit-story, #nav-favorites, #nav-my-stories").show();
+
+  // Show the user's username in the profile link
+  $navUserProfile.text(`${currentUser.username}`).show();
+}
+
+// Event listener for "submit" link in the navigation bar. When clicked,
+// hides other elements and shows the story submission form.
 $navSubmitStory.on("click", function () {
-  console.debug("Submit story link clicked");
-  hidePageComponents(); // Hide everything else
+  console.debug("Submit story link clicked"); // Debug log for event
+
+  hidePageComponents(); // Hide other elements
   $submitForm.show(); // Display the story submission form
 });
 
 /**
- * This message serves as a reminder for enabling "Verbose" logs in the console.
- * Helpful debug information will be shown if the correct logging level is set.
+ * Console warning to enable verbose logging for debug messages.
+ * This helps with debugging by showing detailed log messages.
  */
-console.warn("STUDENT REMINDER: This app logs detailed debug messages." +
-  " If you don't see the 'start' message, ensure you have 'Verbose' logging enabled" +
+console.warn("STUDENT REMINDER: This app logs detailed debug messages. " +
+  "If you don't see the 'start' message, ensure you have 'Verbose' logging enabled" +
   " in your browser's console under 'Default Levels'.");
 
-$(start); // Calls the start function when the DOM is ready
+// Start the app once the DOM is fully loaded
+$(start);

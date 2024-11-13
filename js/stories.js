@@ -25,12 +25,7 @@ async function getAndDisplayStoriesOnLoad() {
  * Returns the HTML markup wrapped in a jQuery object.
  */
 function createStoryMarkup(story, showDeleteBtn = false) {
-  // console.debug("createStoryMarkup", story);
-
-  // Extract the hostname from the story URL
   const hostName = story.getHostName();
-
-  // Check if the current user is logged in to display the favorite star
   const showStarIcon = Boolean(currentUser);
 
   // Construct and return the story HTML markup
@@ -81,16 +76,13 @@ function generateStarHTML(story, user) {
 function renderStoriesOnPage() {
   console.debug("renderStoriesOnPage");
 
-  // Clear the existing stories from the DOM
   $allStoriesList.empty();
 
-  // Iterate over the list of stories and generate HTML for each one
   for (let story of storyList.stories) {
     const $storyMarkup = createStoryMarkup(story);
     $allStoriesList.append($storyMarkup);
   }
 
-  // Show the updated list of stories
   $allStoriesList.show();
 }
 
@@ -99,28 +91,58 @@ function renderStoriesOnPage() {
  * This function adds a new story and updates the DOM accordingly.
  */
 async function handleStorySubmission(evt) {
-  evt.preventDefault(); // Prevent the default form submission
+  evt.preventDefault();
   console.debug("handleStorySubmission");
 
-  // Collect story details from the form fields
   const title = $("#create-title").val();
   const author = $("#create-author").val();
   const url = $("#create-url").val();
-
-  // Construct a new story object with the form data
   const storyData = { title, author, url };
 
-  // Add the story using the StoryList instance and current user
   const addedStory = await storyList.addStory(currentUser, storyData);
 
-  // Generate the HTML for the new story and add it to the list
   const $storyHTML = createStoryMarkup(addedStory);
   $allStoriesList.prepend($storyHTML);
 
-  // Hide and reset the story form after submission
   $submitForm.slideUp("slow");
   $submitForm.trigger("reset");
 }
 
+/**
+ * Show or hide the story submission form based on login status
+ */
+function toggleStoryFormVisibility() {
+  if (currentUser) {
+    $navSubmitStory.show();
+  } else {
+    $navSubmitStory.hide();
+    $submitForm.hide();
+  }
+}
+
+/**
+ * Show or hide favorite story options based on login status
+ */
+function toggleFavoritesVisibility() {
+  if (currentUser) {
+    $navFavorites.show();
+    $favoritedStories.show();
+  } else {
+    $navFavorites.hide();
+    $favoritedStories.hide();
+  }
+}
+
+/**
+ * Initialize visibility for all interactive elements based on login status
+ */
+function initializeVisibilityOnLogin() {
+  toggleStoryFormVisibility();
+  toggleFavoritesVisibility();
+}
+
 // Attach an event listener to handle story form submissions
 $submitForm.on("submit", handleStorySubmission);
+
+// Initialize visibility of elements based on login status when document is ready
+$(initializeVisibilityOnLogin);

@@ -4,103 +4,144 @@
  * Handling navbar clicks and updating the navigation bar
  */
 
-// Global DOM elements used in multiple functions
-// const $allStoriesList = $("#all-stories-list");
-// const $favoritedStories = $("#favorited-stories");
-// const $ownStories = $("#my-stories");
-// const $loginForm = $("#login-form");
-// const $signupForm = $("#signup-form");
-// const $submitForm = $("#submit-form");
-// const $userProfile = $("#user-profile");
-
 /**
- * Hides all page elements to reset the view.
- * This function is helpful for displaying specific components
- * (like forms or story lists) without overlap from previously shown content.
+ * Hides all main page components to reset the view.
+ * Useful when switching between different sections,
+ * so only the desired component is displayed.
  */
 function hidePageComponents() {
   const components = [
     $allStoriesList, // List of all stories
-    $favoritedStories, // List of favorite stories
+    $favoritedStories, // List of favorited stories
     $ownStories, // List of user's own stories
     $loginForm, // Login form
     $signupForm, // Signup form
     $submitForm, // Story submission form
     $userProfile // User profile section
   ];
-  // Hide each component in the list
-  components.forEach(component => component.hide());
+  components.forEach(component => component.hide()); // Hide each component in the list
 }
 
-/** Display the main list of all stories when the site name is clicked */
+/**
+ * Shows the main list of all stories when "Hack or Snooze" (site name) is clicked.
+ * If the user is logged in, they remain logged in.
+ */
 function showAllStories(evt) {
-  console.debug("showAllStories", evt); // Output the event details for debugging
-  hidePageComponents(); // Clear any visible components
-  putStoriesOnPage(); // Populate and display the list of all stories
+  console.debug("showAllStories", evt); // Log event for debugging
+
+  // Hide all other components
+  hidePageComponents();
+
+  // Display the list of all stories
+  putStoriesOnPage();
 }
 
-// Event listener to load all stories when the site name is clicked
+// Event listener: When "Hack or Snooze" is clicked, show all stories without logging out
 $body.on("click", "#nav-all", showAllStories);
 
-/** Display the login and signup forms when "login" is clicked */
+/**
+ * Displays the login and signup forms when "Login/Signup" is clicked.
+ */
 function showLoginForms(evt) {
-  console.debug("showLoginForms", evt); // Output event details for debugging
-  hidePageComponents(); // Hide all currently visible components
-  $loginForm.show(); // Reveal the login form
-  $signupForm.show(); // Reveal the signup form
+  console.debug("showLoginForms", evt); // Log the event for debugging
+
+  // Hide other components
+  hidePageComponents();
+
+  // Show login and signup forms
+  $loginForm.show();
+  $signupForm.show();
 }
 
-// Event listener to open login and signup forms when "login" is clicked
+// Event listener: When "Login/Signup" is clicked, show the login/signup forms
 $navLogin.on("click", showLoginForms);
 
-/** Show the story submission form when "submit" is clicked */
+/**
+ * Displays the story submission form when "Submit Story" is clicked.
+ * This allows logged-in users to add a new story.
+ */
 function showStoryForm(evt) {
-  console.debug("showStoryForm", evt); // Output event details for debugging
-  hidePageComponents(); // Hide all visible elements on the page
-  $allStoriesList.show(); // Display the list of all stories as a background
-  $submitForm.show(); // Show the form for story submission
+  console.debug("showStoryForm", evt); // Log the event for debugging
+
+  // Hide any other visible components
+  hidePageComponents();
+
+  // Display the all stories list as a background
+  $allStoriesList.show();
+
+  // Show the story submission form
+  $submitForm.show();
 }
 
-// Attach an event listener for showing the story form when "submit" is clicked
+// Event listener: When "Submit Story" is clicked, show the submission form
 $navSubmitStory.on("click", showStoryForm);
 
-/** Display the user's favorite stories when "favorites" is clicked */
+/**
+ * Displays the user's favorite stories when "Favorites" is clicked.
+ */
 function showFavorites(evt) {
-  console.debug("showFavorites", evt); // Log event details for debugging
-  hidePageComponents(); // Clear all visible elements
-  putFavoritesListOnPage(); // Show the list of favorited stories
+  console.debug("showFavorites", evt); // Log event for debugging
+
+  // Hide any visible components
+  hidePageComponents();
+
+  // Populate and show the list of favorite stories
+  putFavoritesListOnPage();
 }
 
-// Event listener to display favorite stories on "favorites" click
+// Event listener: When "Favorites" is clicked, show the user's favorite stories
 $body.on("click", "#nav-favorites", showFavorites);
 
-/** Show user's stories when "my stories" is clicked */
+/**
+ * Displays the list of stories submitted by the logged-in user when "My Stories" is clicked.
+ */
 function displayUserStories(evt) {
   console.debug("displayUserStories", evt); // Log the event for debugging
-  hidePageComponents(); // Clear other components from view
-  putUserStoriesOnPage(); // Populate and show the user's stories
-  $ownStories.show(); // Display the section for user's own stories
+
+  // Hide any visible components
+  hidePageComponents();
+
+  // Populate and show the user's stories list
+  putUserStoriesOnPage();
+  $ownStories.show(); // Show the section for the user's own stories
 }
 
-// Event listener to show user's stories when "my stories" is clicked
+// Event listener: When "My Stories" is clicked, show the user's stories
 $body.on("click", "#nav-my-stories", displayUserStories);
 
-/** Display the user profile section when "profile" is clicked */
+/**
+ * Displays the user profile section when "Profile" is clicked.
+ */
 function showUserProfile(evt) {
   console.debug("showUserProfile", evt); // Log event for debugging
-  hidePageComponents(); // Hide other page elements
-  $userProfile.show(); // Show the user profile section
+
+  // Hide other page components
+  hidePageComponents();
+
+  // Show the user profile section
+  $userProfile.show();
 }
 
-// Attach an event listener to display the user profile on "profile" click
+// Event listener: When "Profile" is clicked, show the user profile section
 $navUserProfile.on("click", showUserProfile);
 
-/** Update the navigation bar once the user is logged in */
-function refreshNavOnLogin() {
-  console.debug("refreshNavOnLogin"); // Log the update action
-  $(".main-nav-links").css("display", "flex"); // Make main navigation links visible
-  $navLogin.hide(); // Hide the login link
-  $navLogOut.show(); // Display the logout link
-  $navUserProfile.text(`${currentUser.username}`).show(); // Show the user's username in the profile link
+/**
+ * Updates the navigation bar when a user logs in.
+ * Shows logged-in user navigation options and hides login options.
+ */
+function updateNavOnLogin() {
+  console.debug("updateNavOnLogin"); // Log the update for debugging
+
+  // Show main navigation links (Submit Story, Favorites, My Stories)
+  $(".main-nav-links, #nav-submit-story, #nav-favorites, #nav-my-stories").show();
+
+  // Hide the login link as the user is now logged in
+  $navLogin.hide();
+
+  // Show the logout link
+  $navLogOut.show();
+
+  // Display the user's username in the profile link
+  $navUserProfile.text(`${currentUser.username}`).show();
 }
 
